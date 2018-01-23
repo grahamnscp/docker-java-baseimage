@@ -1,0 +1,42 @@
+
+$ javac HelloJavaContainer.java
+$ java -classpath . HelloJavaContainer
+
+Dockerfile:
+FROM myjava:1.0
+
+COPY ./HelloJavaContainer.class /
+CMD java HelloJavaContainer
+
+
+$ docker build -t runjavahello:latest .
+
+Sending build context to Docker daemon   5.12kB
+Step 1/3 : FROM myjava:1.0
+ ---> 86a777f1de44
+Step 2/3 : COPY ./HelloJavaContainer.class /
+ ---> 58a228058b29
+Removing intermediate container c3af0719b2e2
+Step 3/3 : CMD java HelloJavaContainer
+ ---> Running in d67d738801a8
+ ---> 08d850452802
+Removing intermediate container d67d738801a8
+Successfully built 08d850452802
+Successfully tagged runjavahello:latest
+
+$ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+runjavahello        latest              08d850452802        5 seconds ago       205MB
+myjava              1.0                 86a777f1de44        2 months ago        205MB
+
+
+Test new container java app:
+
+$ docker run -it --rm runjavahello:latest
+Hello Java Container!
+
+and from base image:
+
+$ docker run -it --rm runjavahello:latest java -classpath /HelloJavaImage HelloJavaImage
+Hello Java Image!
+

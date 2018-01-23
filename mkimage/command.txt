@@ -1,0 +1,35 @@
+
+Build Java base image:
+
+$ sudo sh mkimage-java.bash myjava 1.0
+[sudo] password for grahamnscp: 
+using temp package root: /tmp/mkimage-java.bash.sxqdT
+Install desired packages..
+purging unecessary files..
+Installing a sample java app as a test into: /HelloJavaImage
+creating docker image tar: img-myjava-1.0.tar..
+loading image tar into docker..
+sha256:d2c8370b901c7c72c69f89e77d39f64b30c52257c04cf43c385c75f4cfa9fe84
+docker run tests..
+openjdk version "1.8.0_151"
+OpenJDK Runtime Environment (build 1.8.0_151-b12)
+OpenJDK 64-Bit Server VM (build 25.151-b12, mixed mode)
+Hello Java Image!
+
+$ docker images | egrep 'java|REPOSITORY'
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+myjava              1.0                 d2c8370b901c        10 minutes ago      165MB
+
+$ docker run -it --rm myjava:1.0 java -classpath /HelloJavaImage HelloJavaImage
+Hello Java Image!
+
+---------------------------------------------------------------------------------------
+More generic base image examples:
+
+$ sudo sh mkimage-yum.sh -p net-utils -p mlocate -p openldap-clients -t 1.0 centos-img
+$ run -it --rm centos-img:1.0 ldapsearch -VV
+
+$ sudo sh mkimage-yum.sh -p net-utils -p mlocate -p nmap -p nmap-ncat -t 1.0 mynettools
+$ docker run -it --rm mynettools:1.0 ip a
+$ docker run -it --rm mynettools:1.0 nc -v 127.0.0.1
+
